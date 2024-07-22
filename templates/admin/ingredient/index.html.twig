@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecetteController!{% endblock %}
+
+{% block body %}
+<main>
+<h1>Liste des ingredients</h1>
+
+<table class="table table-success table-striped">
+{% for ingredient in ingr %}
+
+<tr>
+<td>{{ingredient.Name}}</td>
+<td>{{ingredient.Price}}</td>
+<td>{{ingredient.DateOfCreation|date("m/d/y")}}</td>
+
+</tr>
+{% endfor %}
+</table>
+
+</main>
+{% endblock %}

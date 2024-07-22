@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+	<main>
+		<h1>Ajouter un nouvel ingrédient</h1>
+		{{form_start (ingredient_form)}}
+		{{form_rest(ingredient_form)}}
+		<input type="submit" value='Créer'>
+		{{form_end(ingredient_form)}}
+	</main>
+ {% endblock %}
+
+
+
