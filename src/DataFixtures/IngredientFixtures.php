@@ -14,14 +14,13 @@ class IngredientFixtures extends Fixture
         $faker = \Faker\Factory::create();
         $faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($faker));
 
-        for($i=0; $i<10;$i++){
+        for ($i = 0; $i < 10; $i++) {
 
             $ingredient = new Ingredient();
-            $ingredient ->SetName($faker->vegetableName);
+            $ingredient->SetName($faker->vegetableName);
             $ingredient->SetPrice($faker->randomDigitNotNull());
             $ingredient->setDateOfCreation(new DateTimeImmutable());
             $manager->persist($ingredient);
-
         }
 
         $manager->flush();

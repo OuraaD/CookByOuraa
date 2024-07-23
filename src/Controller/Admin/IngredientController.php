@@ -15,12 +15,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('admin/ingredient', name: 'admin_ingredient_')]
 class IngredientController extends AbstractController
 {
-    #[Route('/', name: 'list')]
+    #[Route('/', name: 'list', methods: ['GET'])]
     public function list(IngredientRepository $repository): Response
     {
         $ingredient = $repository->findAll();
         return $this->render('admin/ingredient/index.html.twig', [
-            "ingr" => $ingredient
+            "ingredient" => $ingredient
         ]);
     }
 
@@ -30,17 +30,17 @@ class IngredientController extends AbstractController
         return $this->render('admin/ingredient/show.html.twig');
     }
 
-    #[Route('/new', name: 'new')]
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $ingredient = new Ingredient();
         $form = $this->createForm(IngredientType::class, $ingredient);
         $form->handleRequest($request);
 
-        if($form->isSubmitted()&& $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($ingredient);
             $em->flush();
-            $this->addFlash('success', 'Un nouvel ingrédient à été crée !');
+            $this->addFlash('success', 'Un nouvel ingrédient à été ajouté !');
             return $this->redirectToRoute('admin_ingredient_list');
         }
 
@@ -51,12 +51,24 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route('/edit', name: 'edit')]
-    public function edit(): Response
+    #[Route('/edit/{id}', name: 'edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, EntityManagerInterface $em, Ingredient $ingredient): Response
     {
-        return $this->render('admin/ingredient/edit.html.twig');
+        $form = $this->createForm(IngredientType::class, $ingredient);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            $this->addFlash('success', 'Un nouvel ingredient a été ajouté');
+
+            return $this->redirectToRoute('admin_ingredient_list');
+        }
+
+        return $this->render('admin/ingredient/edit.html.twig', ['ingredient_form' => $form]);
     }
-    #[Route('/delete', name: 'delete')]
+
+    #[Route('/delete', name: 'delete', methods: ['DELETE'])]
     public function delete(): Response
     {
         return $this->render('admin/ingredient/delete.html.twig');

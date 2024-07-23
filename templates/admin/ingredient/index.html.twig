@@ -1,22 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RecetteController!{% endblock %}
+{% block title %}Hello RecetteController!
+{% endblock %}
 
 {% block body %}
-<main>
-<h1>Liste des ingredients</h1>
+	<main>
+		<h1>Liste des ingredients</h1>
 
-<table class="table table-success table-striped">
-{% for ingredient in ingr %}
+		<table class="table table-success table-striped">
+			<thead>
+				<tr>
+					<th>Ingredient</th>
+					<th>Prix</th>
+					<th>Modifier</th>
+					<th>supprimer</th>
+				</tr>
+			</thead>
+			{% for ingredient in ingredient %}
 
-<tr>
-<td>{{ingredient.Name}}</td>
-<td>{{ingredient.Price}}</td>
-<td>{{ingredient.DateOfCreation|date("m/d/y")}}</td>
+				<tr>
+					<td>{{ingredient.Name}}</td>
+					<td>{{ingredient.Price}}</td>
 
-</tr>
-{% endfor %}
-</table>
+					<td>
+						<a href={{path('admin_ingredient_edit',{'id':ingredient.id} )}}>Modifier</a>
+					</td>
 
-</main>
+					<td>
+						<form action={{path('admin_ingredient_delete',{'id':ingredient.id} )}} method="POST">
+							<input type="hidden" name="_method" value="DELETE">
+							<button type="submit">Supprimer</button>
+						</form>
+					</td>
+
+				</tr>
+			{% endfor %}
+		</table>
+
+	</main>
 {% endblock %}

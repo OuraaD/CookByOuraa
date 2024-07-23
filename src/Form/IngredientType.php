@@ -11,14 +11,13 @@ class IngredientType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-       
+
         $builder
             ->add('Name')
             ->add('Price')
             ->add('DateOfCreation', null, [
                 'widget' => 'single_text',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
