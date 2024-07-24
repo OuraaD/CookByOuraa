@@ -19,23 +19,27 @@ class RecipeController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(RecipeRepository $repository): Response
     {
-    
+
         $recipe = $repository->findAll();
         return $this->render('admin/recipe/index.html.twig', [
             "recipe_form" => $recipe
         ]);
-
     }
-    #[Route('/create', name: 'create',methods: ['GET', 'POST'])]
+    #[Route('/create', name: 'create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
         $recipe = new Recipe();
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
-        $slugger =new AsciiSlugger();
-        $recipe->setSlug($slugger->slug($recipe->getName()));
+        // $slugger = new AsciiSlugger();
+        // $recipe->setSlug($slugger->slug($recipe->getName()));
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('FileName')->getData();
+            $filedir = $this->getParameter('kernel.project_dir') . '/public/img/lasagne';
+            $fileName = $recipe->getSlug() . '.' . $file->getClientOriginalExtension();
+            $file->move($filedir, $fileName);
+            $recipe->setFileName($fileName);
             $em->persist($recipe);
             $em->flush();
 
@@ -48,7 +52,7 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/update/{id}', name: 'update',methods: ['GET', 'POST'])]
+    #[Route('/update/{id}', name: 'update', methods: ['GET', 'POST'])]
     public function update(Request $request, EntityManagerInterface $em, Recipe $recipe): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -57,7 +61,7 @@ class RecipeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
-            $this->addFlash('success', 'La recette à été modifié avce succès');
+            $this->addFlash('success', 'La recette à été modifié avec succès');
 
             return $this->redirectToRoute('admin_recipe_index');
         }
@@ -65,5 +69,22 @@ class RecipeController extends AbstractController
         return $this->render('admin/recipe/update.html.twig', ['recipe_form' => $form]);
     }
 
+    #[Route('/show/{id}', name: 'show')]
+    public function show(Recipe $recipe)
+    {
 
+        return $this->render('admin/recipe/show.html.twig', ['recipe' => $recipe]);
+    }
+
+    #[Route('/delete/{id}', name:'delete', methods:['DELETE'])]
+
+    public function delete(Recipe $recipe, EntityManagerInterface $em): Response
+    {
+        $em->remove($recipe);
+        $em->flush();
+
+        $this->addFlash('success', 'Recette supprimé !');
+
+        return $this->redirectToRoute('admin_recipe_index');
+    }
 }

@@ -66,25 +66,30 @@ class Recipe
         $this->DateOfCreation = new DateTimeImmutable();
     }
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $UpdateDate = null;
+    #[ORM\PreUpdate]
+    public function setUpdateValue()
+    {
+        $this->UpdateDate = new DateTimeImmutable();
+    }
 
     /**
      * @var Collection<int, Ingredient>
      */
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
+    #[ORM\JoinColumn(onDelete:'SET NULL')]
     private Collection $Ingredients;
+
+    #[ORM\Column(length: 255)]
+    private ?string $FileName = null;
 
     public function __construct()
     {
         $this->Ingredients = new ArrayCollection();
     }
 
-    #[ORM\PreUpdate]
-    public function setUpdateValue()
-    {
-        $this->UpdateDate = new DateTimeImmutable();
-    }
+ 
 
     public function getId(): ?int
     {
@@ -313,6 +318,18 @@ class Recipe
     public function removeIngredient(Ingredient $ingredient): static
     {
         $this->Ingredients->removeElement($ingredient);
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->FileName;
+    }
+
+    public function setFileName(string $FileName): static
+    {
+        $this->FileName = $FileName;
 
         return $this;
     }

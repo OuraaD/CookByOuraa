@@ -1,0 +1,12 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+	<h1>{{recipe.name}}</h1>
+
+    <p><strong>Description :</strong> {{recipe.step}}</p>
+    <p><strong>Temps de préparation :</strong> {{recipe.time}}</p>
+    <p><strong>Nombre de personnes :</strong> {{recipe.people}}</p>
+    <p><strong>Niveau de difficulté :</strong> {{recipe.difficulty}}</p>
+    <p><strong>Date de création :</strong> {{recipe.DateOfCreation | date("d/m/Y")}}</p>
+
+{% endblock %}

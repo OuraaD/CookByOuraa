@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use App\Entity\Ingredient;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
@@ -18,8 +21,12 @@ class RecipeType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom',
+                'label' => 'Name',
                 'required' => true,
+            ])
+            ->add('slug', TextType::class,[
+                'label'=>'slug',
+                'required' => false,
             ])
             ->add('time')
             ->add('people')
@@ -37,6 +44,18 @@ class RecipeType extends AbstractType
                 'required' => true
             ])
             ->add('price')
+            ->add('ingredients', EntityType::class,[
+                'class'=>Ingredient::class,
+                'choice_label'=>'name',
+                'multiple' => true,
+                'expanded' => true,
+            ])
+                ->add('FileName', FileType::class,[
+                    'label'=>'Image',
+                    'mapped'=>false,
+                    'required'=>false
+                ])
+
             ->add('favorite')
             ->addEventListener(FormEvents::PRE_SUBMIT, $this->autoSlug(...));
     }
@@ -47,7 +66,7 @@ class RecipeType extends AbstractType
         if (empty($data['slug'])) {
             $slugger = new AsciiSlugger();
             $slug = $slugger->slug($data['name'])->lower();
-            $data['slug']=$slug;
+            $data['slug']= $slug;
 
             $event->setData($data);
         }

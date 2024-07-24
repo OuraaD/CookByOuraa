@@ -1,0 +1,12 @@
+{% extends 'admin/base.html.twig' %}
+
+
+{% block title %}Hello!{% endblock %}
+
+{% block body %}
+<h1>Supprimer un ingrédient</h1>
+	{{ form_start(recipe_form)}}
+	{{ form_rest(recipe_form)}}
+	<input type="submit" value="Supprimer" class="btn btn-primary" method="POST">
+	{{ form_end(recipe_form)}}
+{% endblock %}
