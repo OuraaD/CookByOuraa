@@ -45,7 +45,6 @@ class Recipe
     #[Assert\Range(min: 1, max: 5)]
     private ?int $difficulty = null;
 
-    
     #[Assert\NotBlank()]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $step = null;
@@ -78,10 +77,10 @@ class Recipe
      * @var Collection<int, Ingredient>
      */
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
-    #[ORM\JoinColumn(onDelete:'SET NULL')]
     private Collection $Ingredients;
 
-    #[ORM\Column(length: 255)]
+
+    #[ORM\Column(nullable: true)]
     private ?string $FileName = null;
 
     public function __construct()
@@ -89,18 +88,18 @@ class Recipe
         $this->Ingredients = new ArrayCollection();
     }
 
- 
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-  
+
 
     /**
      * Get the value of name
-     */ 
+     */
     public function getName()
     {
         return $this->name;
@@ -110,7 +109,7 @@ class Recipe
      * Set the value of name
      *
      * @return  self
-     */ 
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -120,7 +119,7 @@ class Recipe
 
     /**
      * Get the value of slug
-     */ 
+     */
     public function getSlug()
     {
         return $this->slug;
@@ -130,7 +129,7 @@ class Recipe
      * Set the value of slug
      *
      * @return  self
-     */ 
+     */
     public function setSlug($slug)
     {
         $this->slug = $slug;
@@ -140,7 +139,7 @@ class Recipe
 
     /**
      * Get the value of time
-     */ 
+     */
     public function getTime()
     {
         return $this->time;
@@ -150,7 +149,7 @@ class Recipe
      * Set the value of time
      *
      * @return  self
-     */ 
+     */
     public function setTime($time)
     {
         $this->time = $time;
@@ -160,7 +159,7 @@ class Recipe
 
     /**
      * Get the value of people
-     */ 
+     */
     public function getPeople()
     {
         return $this->people;
@@ -170,7 +169,7 @@ class Recipe
      * Set the value of people
      *
      * @return  self
-     */ 
+     */
     public function setPeople($people)
     {
         $this->people = $people;
@@ -180,7 +179,7 @@ class Recipe
 
     /**
      * Get the value of difficulty
-     */ 
+     */
     public function getDifficulty()
     {
         return $this->difficulty;
@@ -190,7 +189,7 @@ class Recipe
      * Set the value of difficulty
      *
      * @return  self
-     */ 
+     */
     public function setDifficulty($difficulty)
     {
         $this->difficulty = $difficulty;
@@ -200,7 +199,7 @@ class Recipe
 
     /**
      * Get the value of step
-     */ 
+     */
     public function getStep()
     {
         return $this->step;
@@ -210,7 +209,7 @@ class Recipe
      * Set the value of step
      *
      * @return  self
-     */ 
+     */
     public function setStep($step)
     {
         $this->step = $step;
@@ -220,7 +219,7 @@ class Recipe
 
     /**
      * Get the value of price
-     */ 
+     */
     public function getPrice()
     {
         return $this->price;
@@ -230,7 +229,7 @@ class Recipe
      * Set the value of price
      *
      * @return  self
-     */ 
+     */
     public function setPrice($price)
     {
         $this->price = $price;
@@ -240,7 +239,7 @@ class Recipe
 
     /**
      * Get the value of favorite
-     */ 
+     */
     public function getFavorite()
     {
         return $this->favorite;
@@ -250,7 +249,7 @@ class Recipe
      * Set the value of favorite
      *
      * @return  self
-     */ 
+     */
     public function setFavorite($favorite)
     {
         $this->favorite = $favorite;
@@ -260,7 +259,7 @@ class Recipe
 
     /**
      * Get the value of DateOfCreation
-     */ 
+     */
     public function getDateOfCreation()
     {
         return $this->DateOfCreation;
@@ -270,7 +269,7 @@ class Recipe
      * Set the value of DateOfCreation
      *
      * @return  self
-     */ 
+     */
     public function setDateOfCreation($DateOfCreation)
     {
         $this->DateOfCreation = $DateOfCreation;
@@ -280,7 +279,7 @@ class Recipe
 
     /**
      * Get the value of UpdateDate
-     */ 
+     */
     public function getUpdateDate()
     {
         return $this->UpdateDate;
@@ -290,7 +289,7 @@ class Recipe
      * Set the value of UpdateDate
      *
      * @return  self
-     */ 
+     */
     public function setUpdateDate($UpdateDate)
     {
         $this->UpdateDate = $UpdateDate;

@@ -2,11 +2,27 @@
 
 {% block body %}
 	<h1>{{recipe.name}}</h1>
+	<img src={{ asset('img/thumbnailFile/') ~ recipe.fileName }} alt="image de {{recipe.name}}" class="img-fluid img-thumbnailFile float-center">
+	<h3>ingredients</h3>
+	{% for ingredient in recipe.ingredients %}
+		<p>{{ingredient.name}}</p>
 
-    <p><strong>Description :</strong> {{recipe.step}}</p>
-    <p><strong>Temps de préparation :</strong> {{recipe.time}}</p>
-    <p><strong>Nombre de personnes :</strong> {{recipe.people}}</p>
-    <p><strong>Niveau de difficulté :</strong> {{recipe.difficulty}}</p>
-    <p><strong>Date de création :</strong> {{recipe.DateOfCreation | date("d/m/Y")}}</p>
+	{% endfor %}
+
+	<p>
+		<strong>Description :</strong>
+		{{recipe.step}}</p>
+	<p>
+		<strong>Temps de préparation :</strong>
+		{{recipe.time}}</p>
+	<p>
+		<strong>Nombre de personnes :</strong>
+		{{recipe.people}}</p>
+	<p>
+		<strong>Niveau de difficulté :</strong>
+		{{recipe.difficulty}}</p>
+	<p>
+		<strong>Date de création :</strong>
+		{{recipe.DateOfCreation | date("d/m/Y")}}</p>
 
 {% endblock %}

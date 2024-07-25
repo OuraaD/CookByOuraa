@@ -7,20 +7,26 @@ use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
-class RecipetFixtures extends Fixture implements DependentFixtureInterface
+class RecipeFixtures extends Fixture implements DependentFixtureInterface
 {
+    private $slugging;
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugging=$slugger;
+    }
     public function load(ObjectManager $manager): void
     {
-        $slugger=\Faker\Factory::create();
 
         $faker = \Faker\Factory::create();
         $faker->addProvider(new \FakerRestaurant\Provider\fr_FR\Restaurant($faker));
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 9; $i++) {
 
             $recipe = new Recipe();
-            $recipe->SetName($faker->foodName);
-            $recipe->SetSlug('');
+            $recipe->SetName($faker->unique->foodName);
+            $slug = $this->slugging->slug($recipe->getName());
+            $recipe->setSlug(strtolower($slug));
             $recipe->SetTime($faker->randomDigitNotNull());
             $recipe->SetPeople($faker->randomDigitNotNull());
             $recipe->SetDifficulty('20');

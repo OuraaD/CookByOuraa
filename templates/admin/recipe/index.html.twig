@@ -7,7 +7,7 @@
 <main>
 	<h1>Nos recettes</h1>
 
-	<a href={{path('admin_recipe_create')}} class="btn btn-light">Ajouter une nouvelle recette</a>
+	<a href={{path('admin_recipe_create')}} class="btn btn-outline-secondary">Ajouter une nouvelle recette</a>
 
 	<table class="table table-success table-striped">
 		<thead>
@@ -27,7 +27,9 @@
 		{% for recipe  in recipe_form %}
 
 			<tr>
-				<td>{{recipe.name}}</td>
+				<td>
+				<a href={{path('admin_recipe_show',{'slug': recipe.slug} )}}  class="btn btn-outline-secondary" >{{recipe.name}}</a>
+				</td>
 				<td>{{recipe.time}}</td>
 				<td>{{recipe.people}}</td>
 				<td>{{recipe.difficulty}}</td>
@@ -35,15 +37,21 @@
 				<td>{{recipe.price}}</td>
 
 				<td>
-					<a href={{path('admin_recipe_update',{'id':recipe.id} )}}>Modifier</a>
+					<a href={{path('admin_recipe_update',{'slug': recipe.slug})}} class="btn btn-outline-secondary">Modifier</a>
 				</td>
+		<td>
+                        <form action={{path('admin_recipe_delete',{'id':recipe.id} )}} method='POST'>
+                        <input type="hidden" name='_method' value='DELETE'>
+                        <button type='submit' class="btn btn-outline-secondary">Supprimer</button>
+                        </form>
+
+                    </td>
 				<td>
 					<img src="{{asset('img/FileName/') ~ recipe.FileName}}" alt="">
-					<a href="{{path('admin_recipe_update',{'id':recipe.id})}}">Modifier</a>
+					<a href={{path('admin_recipe_update',{'slug': recipe.slug})}} class="btn btn-outline-secondary" >Ajouter une image</a>
 				</td>
 			</tr>
-		</form>
-
+	
 
 	</td>
 

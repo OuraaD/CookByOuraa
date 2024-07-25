@@ -50,7 +50,7 @@ class RecipeType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-                ->add('FileName', FileType::class,[
+                ->add('thumbnailFile', FileType::class,[
                     'label'=>'Image',
                     'mapped'=>false,
                     'required'=>false

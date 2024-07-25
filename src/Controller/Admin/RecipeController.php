@@ -10,9 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[Route('/admin/recipe', name: 'admin_recipe_')]
+#[IsGranted('ROLE_USER')]
 class RecipeController extends AbstractController
 {
 
@@ -35,13 +37,21 @@ class RecipeController extends AbstractController
         // $slugger = new AsciiSlugger();
         // $recipe->setSlug($slugger->slug($recipe->getName()));
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('FileName')->getData();
-            $filedir = $this->getParameter('kernel.project_dir') . '/public/img/lasagne';
-            $fileName = $recipe->getSlug() . '.' . $file->getClientOriginalExtension();
-            $file->move($filedir, $fileName);
-            $recipe->setFileName($fileName);
-            $em->persist($recipe);
-            $em->flush();
+            // $form->setDateOfCreation(new DateTimeImmutable());
+            $file = $form->get('thumbnailFile')->getData();
+
+            if($file){
+
+                $filedir = $this->getParameter('kernel.project_dir') . '/public/img/thumnailFile';
+                $fileName = $recipe->getSlug() . '.' . $file->getClientOriginalExtension();
+                $file->move($filedir, $fileName);
+
+                $recipe->setFileName($fileName);
+            }
+                $em->persist($recipe);
+                $em->flush();
+
+           
 
             $this->addFlash('success', 'La recette a été crée avec succès!');
             return $this->redirectToRoute('admin_recipe_index');
@@ -52,7 +62,7 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/update/{id}', name: 'update', methods: ['GET', 'POST'])]
+    #[Route('/update/{slug}', name: 'update', methods: ['GET', 'POST'])]
     public function update(Request $request, EntityManagerInterface $em, Recipe $recipe): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -69,7 +79,7 @@ class RecipeController extends AbstractController
         return $this->render('admin/recipe/update.html.twig', ['recipe_form' => $form]);
     }
 
-    #[Route('/show/{id}', name: 'show')]
+    #[Route('/show/{slug}', name: 'show')]
     public function show(Recipe $recipe)
     {
 

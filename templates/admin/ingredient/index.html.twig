@@ -23,13 +23,13 @@
 					<td>{{ingredient.Price}}</td>
 
 					<td>
-						<a href={{path('admin_ingredient_edit',{'id':ingredient.id} )}}>Modifier</a>
+						<a href={{path('admin_ingredient_edit',{'id':ingredient.id} )}} class="btn btn-outline-secondary">Modifier</a>
 					</td>
 
 					<td>
 						<form action={{path('admin_ingredient_delete',{'id':ingredient.id} )}} method="POST">
 							<input type="hidden" name="_method" value="DELETE">
-							<button type="submit">Supprimer</button>
+							<button type="submit" class="btn btn-outline-secondary">Supprimer</button>
 						</form>
 					</td>
 
