@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 
-#[Route('admin/ingredient', name: 'admin_ingredient_')]
+#[Route('/admin/ingredient', name: 'admin_ingredient_')]
 class IngredientController extends AbstractController
 {
     #[Route('/', name: 'list', methods: ['GET'])]
@@ -68,9 +68,14 @@ class IngredientController extends AbstractController
         return $this->render('admin/ingredient/edit.html.twig', ['ingredient_form' => $form]);
     }
 
-    #[Route('/delete', name: 'delete', methods: ['DELETE'])]
-    public function delete(): Response
+    #[Route('/delete/{id}', name: 'delete', methods: 'DELETE')]
+    public function delete(Recipe $recipe, EntityManagerInterface $em)
     {
-        return $this->render('admin/ingredient/delete.html.twig');
+        $em->remove($recipe);
+        $em->flush();
+
+        $this->addFlash('success', 'Recette supprimé !');
+
+        return $this->redirectToRoute('admin_recipe_index');
     }
 }
