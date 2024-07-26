@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[Route('/admin/recipe', name: 'admin_recipe_')]
-#[IsGranted('ROLE_USER')]
+// #[IsGranted('ROLE_USER')]
 class RecipeController extends AbstractController
 {
 
@@ -42,7 +42,7 @@ class RecipeController extends AbstractController
 
             if($file){
 
-                $filedir = $this->getParameter('kernel.project_dir') . '/public/img/thumnailFile';
+                $filedir = $this->getParameter('kernel.project_dir') . '/public/img/thumbnails';
                 $fileName = $recipe->getSlug() . '.' . $file->getClientOriginalExtension();
                 $file->move($filedir, $fileName);
 
